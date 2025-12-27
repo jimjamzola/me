@@ -153,11 +153,33 @@ a:hover{text-decoration:underline}
 }
 .profile-links a:hover{opacity:0.85}
 
-.profile-blurb{
+.profile-blurb a{
   color:var(--muted);
-  font-size:13px;
-  margin:0;
+  text-decoration:underline;
 }
+.profile-blurb a:hover{
+  color:var(--accent);
+}
+
+.profile-links{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.profile-links a{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:var(--accent);
+  font-size:15px;
+}
+
+.profile-links i{
+  font-size:18px;
+}
+
 
 /* ========================= */
 /* PUBLICATIONS */
