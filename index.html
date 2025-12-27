@@ -37,34 +37,50 @@
 
 <main class="container">
 
-  <section class="lead">
-    <h2>Research Focus</h2>
-    <p>
-      I work on structure-preserving neural surrogates for partial differential equations, with an emphasis on long-time fidelity, geometric integration, and learning constrained dynamics. My research combines analysis, numerical methods, and machine learning to produce models that respect invariants, symmetries, and physical structure.
-    </p>
-    <p>
-      This site collects publications, preprints, slides, and project pages with example code and notebooks.
-    </p>
+  <!-- HERO: left = research focus, right = small profile card -->
+  <section class="hero-grid">
+    <div class="hero-text">
+      <h2>Research Focus</h2>
+      <p>
+        I work on structure-preserving neural surrogates for partial differential equations, with an emphasis on long-time fidelity, geometric integration, and learning constrained dynamics. My research combines analysis, numerical methods, and machine learning to produce models that respect invariants, symmetries, and physical structure.
+      </p>
+      <p>
+        This site collects publications, preprints, slides, and project pages with example code and notebooks.
+      </p>
+
+      <h3>Active Projects</h3>
+      <ul>
+        <li><a href="projects.html#ntf">Neural Tangent Flow for long-time integration</a></li>
+        <li><a href="projects.html#silo">SILO 2.0: structure-integrating learning for rigid body dynamics</a></li>
+        <li><a href="projects.html#pde">Structure-preserving operator learning for nonlinear PDEs</a></li>
+      </ul>
+
+      <h3>Latest</h3>
+      <ul>
+        <li><a href="posts.html#ntf">New preprint: Neural Tangent Flow for long-time integrators</a></li>
+        <li><a href="talks.html#ascend">Talk at ASCEND convening, January 30</a></li>
+        <li><a href="projects.html#silo">SILO 2.0 project page now live</a></li>
+      </ul>
+    </div>
+
+    <aside class="profile-right" aria-label="Profile and links">
+      <img src="images/profile.jpg" alt="Jimmie Adriazola" class="profile-photo">
+
+      <div class="profile-name">Jimmie Adriazola</div>
+      <div class="profile-role">Incoming Assistant Professor<br>School of Mathematical and Statistical Sciences</div>
+
+      <div class="profile-links">
+        <a href="https://scholar.google.com/your" target="_blank" rel="noopener" title="Google Scholar">Google Scholar</a>
+        <a href="https://search.asu.edu/your" target="_blank" rel="noopener" title="ASU profile">ASU page</a>
+        <a href="cv.pdf" title="Curriculum vitae">CV</a>
+        <a href="mailto:jimmie.adriazola@asu.edu" title="Email">Email</a>
+      </div>
+
+      <p class="profile-blurb">I run an open-source codebase and mentor students. For code and notebooks, see the Projects and Publications pages.</p>
+    </aside>
   </section>
 
-  <section class="highlights">
-    <h3>Active Projects</h3>
-    <ul>
-      <li><a href="projects.html#ntf">Neural Tangent Flow for long-time integration</a></li>
-      <li><a href="projects.html#silo">SILO 2.0: structure-integrating learning for rigid body dynamics</a></li>
-      <li><a href="projects.html#pde">Structure-preserving operator learning for nonlinear PDEs</a></li>
-    </ul>
-  </section>
-
-  <section class="highlights">
-    <h3>Latest</h3>
-    <ul>
-      <li><a href="posts.html#ntf">New preprint: Neural Tangent Flow for long-time integrators</a></li>
-      <li><a href="talks.html#ascend">Talk at ASCEND convening, January 30</a></li>
-      <li><a href="projects.html#silo">SILO 2.0 project page now live</a></li>
-    </ul>
-  </section>
-
+  <!-- rest of homepage content (roles, contact, footer) -->
   <section class="education-compact">
     <h3>Selected Roles</h3>
     <ul>
@@ -93,4 +109,5 @@
 
 </body>
 </html>
+
 
