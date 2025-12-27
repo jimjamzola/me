@@ -275,6 +275,93 @@ a:focus{
   .pub-figure img{max-width:100%}
 }
 
+/* ---------- mobile / small screens ---------- */
+/* Replace your existing @media (max-width:880px){...} block with this */
+@media (max-width:880px){
+  /* header - compact and flexible */
+  .header-inner{
+    flex-direction:row;
+    align-items:center;
+    gap:12px;
+    padding:8px 0;
+  }
+
+  /* allow brand to shrink so nav can live on the same row */
+  .brand{
+    flex:1 1 auto;
+    min-width:0; /* important so long names wrap/truncate gracefully */
+  }
+  .brand .logo{
+    font-size:16px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:inline-block;
+    vertical-align:middle;
+  }
+  .brand .subtitle{
+    display:block;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+
+  /* show the nav as a horizontal scroller instead of hiding it */
+  .main-nav{
+    display:flex;
+    flex:0 0 auto;
+    gap:12px;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch; /* smooth scrolling on iOS */
+    padding:6px 4px;
+    align-items:center;
+  }
+  .main-nav a{
+    white-space:nowrap;
+    font-size:14px;
+    color:var(--muted);
+    padding:6px 8px;
+    border-radius:6px;
+  }
+  .main-nav a:focus,
+  .main-nav a:hover{
+    color:var(--accent);
+    background:rgba(224,83,75,0.04);
+  }
+
+  /* overall page spacing */
+  main.container{
+    padding-top:24px;
+  }
+
+  /* hero -> single column */
+  .hero-grid{
+    grid-template-columns:1fr;
+    gap:20px;
+  }
+  .profile-right{
+    order:2;
+    margin-top:18px;
+  }
+  .hero-text{
+    order:1;
+  }
+
+  /* publications and figures stack nicely */
+  .pub-entry{
+    grid-template-columns:1fr;
+  }
+  .pub-figure{
+    margin-top:12px;
+    justify-content:flex-start;
+  }
+  .pub-figure img{
+    max-width:100%;
+    height:auto;
+  }
+}
+
+
 /* soft break helper */
 .soft-break{display:none}
 @media (max-width:640px){ .soft-break{display:inline} }
