@@ -361,6 +361,61 @@ a:focus{
   }
 }
 
+/* Research opportunities block */
+.research-opps {
+  margin: 48px 0;
+  text-align: left;
+}
+
+/* heading */
+.research-heading {
+  font-size: 20px;
+  margin: 0 0 12px;
+  color: var(--text);
+  font-weight: 700;
+}
+
+/* banner / image container */
+.research-banner {
+  display: flex;
+  justify-content: center;   /* center the image */
+  margin: 14px 0 20px;
+}
+
+/* image sizing — wide but capped so it doesn't dominate phones */
+.research-image {
+  width: min(960px, 100%);   /* at most 960px wide, shrink to 100% on small screens */
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 10px 30px rgba(2,6,10,0.6);
+  display: block;
+  object-fit: cover;
+}
+
+/* copy */
+.research-content {
+  max-width: 920px;
+  margin: 0 auto; /* center the text column under the image */
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.research-intro { color: var(--text); font-weight:600; margin-bottom:8px; }
+.research-body { margin-bottom:10px; }
+.research-details { margin-bottom:12px; color: var(--muted); }
+.research-funding { margin-top:8px; font-size:14px; color:var(--muted); }
+.research-apply { margin-top:12px; color:var(--text); font-weight:600; }
+
+/* small screens: slightly smaller heading and image */
+@media (max-width:700px){
+  .research-heading { font-size:18px; }
+  .research-image { width:100%; max-width:720px; }
+  .research-content { padding: 0 6px; }
+}
+
+
 
 /* soft break helper */
 .soft-break{display:none}
