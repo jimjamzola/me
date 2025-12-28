@@ -683,6 +683,51 @@ html, body {
 }
 */
 
+/* ===== Teaching course layout ===== */
+
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 28px;
+  margin: 10px 0 26px;
+}
+
+.course-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+
+.course-title {
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.course-meta {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.course-links a {
+  font-size: 14px;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.course-links a:hover {
+  text-decoration: underline;
+}
+
+/* Stack to one column on phones */
+@media (max-width: 800px) {
+  .course-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 
 /* soft break helper */
 .soft-break{display:none}
