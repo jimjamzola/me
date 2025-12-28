@@ -13,133 +13,157 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <!-- Page-specific small CSS fixes and layout for teaching page -->
   <style>
-    /* ---------- Header / nav fixes ---------- */
-    /* Keep header compact and avoid brand stacking except on very narrow screens */
+  /* ---------- Keep header consistent with site-wide styles ---------- */
+  /* Avoid re-stacking the header on desktop; match the main site. */
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px 0;
+  }
+
+  /* Brand stays inline so logo + subtitle do not create extra top space */
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+  .brand .logo {
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--text);
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+  .brand .subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0;
+    white-space: nowrap;
+    opacity: 0.95;
+  }
+
+  /* Nav: single-line horizontal scroller when there's not enough room.
+     Do not let nav wrap and thereby push the header taller. */
+  .main-nav {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 6px 0;
+    min-width: 0;
+  }
+  .main-nav a {
+    white-space: nowrap;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 6px 0;
+    margin-left: 0;
+  }
+  .main-nav a[aria-current="page"] {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* On small screens keep header compact but do NOT create extra vertical subtitle. */
+  @media (max-width:880px) {
     .header-inner {
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
-      padding:10px 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+      padding: 8px 0;
     }
+    .brand { justify-content: space-between; }
+    .brand .subtitle { display: none; } /* avoids vertical stacking */
+    .main-nav { padding-top: 4px; gap: 12px; }
+  }
 
-    /* brand: prefer row layout so name and subtitle sit on same row */
-    .brand {
-      display:flex;
-      align-items:center;
-      gap:12px;
-      min-width:0;             /* let it shrink */
-    }
-    .brand .logo {
-      font-weight:700;
-      font-size:20px;
-      color:var(--text);
-      text-decoration:none;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      display:inline-block;
-      min-width:0;
-    }
-    .brand .subtitle {
-      font-size:13px;
-      color:var(--muted);
-      margin:0;
-      white-space:nowrap;
-      opacity:0.95;
-    }
+  /* ---------- Page grid ---------- */
+  .page-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+  @media (min-width:1100px) {
+    .page-grid { grid-template-columns: 1fr 360px; }
+  }
 
-    /* main nav: single-line horizontal scroller when needed */
-    .main-nav{
-      display:flex;
-      gap:18px;
-      align-items:center;
-      flex-wrap:nowrap;
-      overflow-x:auto;
-      -webkit-overflow-scrolling:touch;
-      padding:6px 0;
-      min-width:0;             /* allow shrink */
-    }
-    .main-nav a{ white-space:nowrap; color:var(--muted); text-decoration:none; padding:6px 0; }
-    .main-nav a[aria-current="page"]{ color:var(--text); font-weight:600; }
+  /* ---------- Hero ---------- */
+  .teaching-hero img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+  }
+  .teaching-hero h2 {
+    margin: 0 0 12px;
+    font-weight: 600;
+    color: var(--muted);
+  }
 
-    /* small screens: stack header but keep it compact */
-    @media (max-width:880px){
-      .header-inner{
-        flex-direction:column;
-        align-items:stretch;
-        gap:8px;
-        padding:8px 0;
-      }
-      .brand { justify-content:space-between; }
-      .brand .subtitle{ display:none; } /* avoid vertical subtitle text */
-      .main-nav { padding-top:4px; gap:12px; }
-    }
+  /* ---------- Year grid & course cards (fixed) ---------- */
+  /* IMPORTANT: use smaller min width so two cards fit side-by-side on medium screens.
+     auto-fit lets them wrap naturally; min-width 220px gives good density without overflow. */
+  .year-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    align-items: stretch;
+    margin: 0;
+  }
 
-    /* ---------- Page grid ---------- */
-    .page-grid{ display:grid; grid-template-columns: 1fr; gap:28px; align-items:start; }
-    @media (min-width:1100px){
-      .page-grid{ grid-template-columns: 1fr 360px; }
-    }
+  /* Ensure children can shrink inside grid cells (prevents forcing a wider column) */
+  .year-grid > * { min-width: 0; }
 
-    /* ---------- Teaching hero ---------- */
-    .teaching-hero img { width:100%; height:auto; display:block; border-radius:8px; }
-    .teaching-hero h2{ margin:0 0 12px; font-weight:600; color:var(--muted); }
+  .course-card {
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    border: 1px solid rgba(255,255,255,0.03);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 8px 24px rgba(2,6,10,0.45);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;            /* critical to prevent overflow */
+    width: 100%;
+    max-width: 100%;
+  }
+  .course-title { font-weight: 700; color: var(--text); margin-bottom: 6px; font-size: 15px; word-break: break-word; }
+  .course-meta  { color: var(--muted); margin-bottom: 10px; font-size: 13px; }
+  .course-links a { color: var(--accent); text-decoration: none; font-size: 13px; }
+  .course-links a:hover { text-decoration: underline; }
 
-    /* ---------- Year grid & course cards (fixed) ---------- */
-    /* Use a slightly smaller min width so two cards can fit without forcing overflow.
-       Use auto-fit so cards fill available space. */
-    .year-grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap:18px;
-      align-items:stretch;
-      margin:0;
-    }
+  /* On very narrow screens force single column */
+  @media (max-width:800px) {
+    .year-grid { grid-template-columns: 1fr; }
+  }
 
-    /* safety: allow grid children to shrink (prevents overflow) */
-    .year-grid > * { min-width: 0; }
+  /* ---------- Seminars & research ---------- */
+  .teaching-seminars .seminar-entry { margin: 12px 0; padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.03); }
+  .teaching-seminars .seminar-entry h4 { margin: 6px 0 8px; color: var(--text); font-size: 16px; }
+  .seminar-entry .small { color: var(--muted); line-height: 1.5; font-size: 14px; }
 
-    .course-card{
-      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
-      border:1px solid rgba(255,255,255,0.03);
-      border-radius:8px;
-      padding:16px;
-      box-shadow: 0 8px 24px rgba(2,6,10,0.45);
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      min-width:0;            /* important */
-    }
-    .course-title{ font-weight:700; color:var(--text); margin-bottom:6px; font-size:15px; word-break:break-word; }
-    .course-meta{ color:var(--muted); margin-bottom:10px; font-size:13px; }
-    .course-links a{ color:var(--accent); text-decoration:none; font-size:13px; }
-    .course-links a:hover{ text-decoration:underline; }
+  .research-opps { margin-top: 22px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.03); }
+  .research-banner { max-width: 100%; margin: 8px 0 12px; text-align: center; }
+  .research-image { width: 100%; max-width: 920px; height: auto; border-radius: 8px; box-shadow: 0 8px 30px rgba(2,6,10,0.45); border:1px solid rgba(255,255,255,0.03); }
 
-    /* On very narrow screens make course cards stack cleanly */
-    @media (max-width:800px){
-      .year-grid{ grid-template-columns: 1fr; }
-    }
+  /* ---------- Small tweaks ---------- */
+  .profile-photo { width: 160px; height: auto; display: block; margin: 0 auto 12px; border-radius: 999px; }
+  .profile-card { min-width: 0; }
 
-    /* ---------- Seminars & research ---------- */
-    .teaching-seminars .seminar-entry{ margin:12px 0; padding:12px 0; border-top:1px solid rgba(255,255,255,0.03); }
-    .teaching-seminars .seminar-entry h4{ margin:6px 0 8px; color:var(--text); font-size:16px; }
-    .seminar-entry .small{ color:var(--muted); line-height:1.5; font-size:14px; }
+  /* Prevent horizontal overflow from long titles/links */
+  .year-heading, .course-title, .course-meta, a { word-break: break-word; overflow-wrap: break-word; }
+</style>
 
-    .research-opps{ margin-top:22px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.03); }
-    .research-banner{ max-width:100%; margin:8px 0 12px; text-align:center; }
-    .research-image{ width:100%; max-width:920px; height:auto; border-radius:8px; box-shadow:0 8px 30px rgba(2,6,10,0.45); border:1px solid rgba(255,255,255,0.03); }
-
-    /* ---------- Small tweaks ---------- */
-    .profile-photo { width:160px; height:auto; display:block; margin:0 auto 12px; border-radius:999px; }
-    .profile-card { min-width:0; } /* ensure aside can shrink on narrow screens */
-
-    /* Prevent accidental horizontal overflow from long inline content */
-    .year-heading, .course-title, .course-meta, a { word-break:break-word; overflow-wrap:break-word; }
-
-  </style>
 </head>
 
 <body>
@@ -340,21 +364,6 @@
 
     </section>
 
-    <!-- RIGHT: profile card (kept simple so it plugs into your existing site) -->
-    <aside class="profile-card" style="background:transparent; border:none; padding:0;">
-      <div style="background:linear-gradient(180deg,var(--surface),#0b1216); border:1px solid var(--border); border-radius:10px; padding:18px; box-shadow:0 18px 40px rgba(2,6,10,0.55);">
-        <img src="images/Nesin-Amphitheater.jpg" alt="Jimmie Adriazola portrait" class="profile-photo">
-        <div class="profile-name" style="text-align:center; font-weight:700; color:var(--text); margin-bottom:6px;">Jimmie Adriazola</div>
-        <div class="profile-role" style="text-align:center; color:var(--muted); font-size:13px; margin-bottom:12px;">Incoming Assistant Professor<br>School of Mathematical and Statistical Sciences</div>
-
-        <div class="profile-links" style="display:flex; justify-content:center; gap:18px; margin-bottom:12px;">
-          <a href="https://scholar.google.com/citations?user=aTOBmQUAAAAJ&hl=en" target="_blank" rel="noopener" style="color:var(--accent);"><i class="fa fa-graduation-cap" aria-hidden="true"></i> <span style="margin-left:6px;">Google Scholar</span></a>
-          <a href="https://search.asu.edu/profile/5123395" target="_blank" rel="noopener" style="color:var(--accent);"><i class="fa fa-university" aria-hidden="true"></i> <span style="margin-left:6px;">ASU page</span></a>
-        </div>
-
-        <p class="profile-blurb" style="color:var(--muted); font-size:13px; text-align:center;">The amphitheater above is located at the <a href="https://nesinkoyleri.org/en/" target="_blank" rel="noopener">Nesin Mathematics Village</a> in Turkey.</p>
-      </div>
-    </aside>
 
   </main>
 
