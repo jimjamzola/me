@@ -13,28 +13,37 @@
   <!-- Font Awesome (already used site-wide) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <!-- Page-specific layout safety: header parity + course two-up rows -->
+  <!-- Page-specific layout safety: enforce header parity + responsive two-up rows -->
   <style>
-    /* Keep header identical to home layout (no vertical subtitle stacking on desktop) */
-    .header-inner {
-      display:flex !important;
-      flex-direction:row !important;
-      align-items:center !important;
-      justify-content:space-between !important;
-      gap:20px;
-      padding:10px 0;
-      min-width:0;
+    /* ---------- Header: explicitly match other pages ---------- */
+    /* Target the exact header/inner container and force desktop row layout */
+    header.site-header {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      background: linear-gradient(180deg,var(--surface),#0b1116);
+      border-bottom: 1px solid rgba(255,255,255,0.02);
     }
+
+    header.site-header .container.header-inner {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 20px;
+      padding: 0;
+      min-width: 0;
+    }
+
     .brand {
-      display:flex !important;
-      flex-direction:row !important;
-      align-items:center !important;
-      gap:12px;
-      min-width:0;
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      gap: 12px;
+      min-width: 0;
     }
     .brand .logo {
       font-weight:700;
-      font-size:20px;
+      font-size:18px;
       color:var(--text);
       text-decoration:none;
       white-space:nowrap;
@@ -64,50 +73,58 @@
     .main-nav a{ white-space:nowrap; color:var(--muted); text-decoration:none; padding:6px 0; }
     .main-nav a[aria-current="page"]{ color:var(--text); font-weight:600; }
 
+    /* Keep header compact on small screens but do not re-flow on desktop */
     @media (max-width:880px){
-      .header-inner { flex-direction:column !important; align-items:stretch; gap:8px; padding:8px 0; }
-      .brand { justify-content:space-between; }
-      .brand .subtitle { display:none !important; } /* keep header compact on phones */
+      header.site-header .container.header-inner {
+        flex-direction: column !important;
+        align-items: stretch;
+        gap: 8px;
+      }
+      .brand { justify-content: space-between; }
+      .brand .subtitle { display:none !important; } /* avoid tall header on phones */
       .main-nav { padding-top:4px; gap:12px; }
     }
 
-    /* Page grid: main + sidebar */
-    .page-grid { display:grid; grid-template-columns:1fr; gap:28px; align-items:start; }
-    @media (min-width:1100px){ .page-grid { grid-template-columns: 1fr 360px; } }
+    /* ---------- Page grid ---------- */
+    .page-grid {
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:28px;
+      align-items:start;
+    }
+    @media (min-width:1100px){
+      .page-grid { grid-template-columns: 1fr 360px; }
+    }
 
-    /* Hero */
+    /* ---------- Hero ---------- */
     .teaching-hero img { width:100%; height:auto; display:block; border-radius:8px; }
     .teaching-hero h2 { margin:0 0 12px; font-weight:600; color:var(--muted); }
 
-    /* COURSE LAYOUT: allow each .course-year to contain a .course-row.
-       .course-row is a responsive grid that shows two cards side-by-side when space allows.
-       This preserves the exact text you wrote while ensuring visual two-up layout. */
+    /* ---------- Course rows: two-up responsive grid for every .course-year ---------- */
     .course-year { margin:18px 0; }
     .course-year > h4 { margin:8px 0 10px; color:var(--text); font-size:15px; }
 
     .course-row {
       display:grid;
-      grid-template-columns: 1fr;   /* default single column (phones) */
+      grid-template-columns: 1fr;   /* default single-column on very small screens */
       gap:16px;
       align-items:stretch;
     }
 
-    /* medium screens: allow two across when each card can be at least 260px */
+    /* medium screens: allow two across if each can be >=260px */
     @media (min-width:560px){
-      .course-row {
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      }
+      .course-row { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
     }
 
-    /* wide screens: prefer two fixed columns */
+    /* wide screens: prefer two equal columns */
     @media (min-width:1000px){
       .course-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
-    /* safety: children must be able to shrink inside grid to avoid forcing overflow */
+    /* allow grid children to shrink so long text doesn't force column width */
     .course-row > * { min-width:0; }
 
-    /* card styling (keeps your text intact) */
+    /* card styling (preserve your language) */
     .course-entry {
       background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
       border: 1px solid rgba(255,255,255,0.03);
@@ -124,10 +141,10 @@
     .course-links a { color:var(--accent); text-decoration:none; font-size:13px; margin-right:8px; }
     .course-links a:hover { text-decoration:underline; }
 
-    /* small helpers to avoid overflow from long words/links */
+    /* small safety */
     .course-title, .course-meta, a, p { word-break:break-word; overflow-wrap:break-word; }
 
-    /* seminars / research small styles (unchanged language) */
+    /* seminars & research unchanged language */
     .teaching-seminars .seminar-entry { margin:12px 0; padding:12px 0; border-top:1px solid rgba(255,255,255,0.03); }
     .teaching-seminars .seminar-entry h4 { margin:6px 0 8px; color:var(--text); font-size:16px; }
     .seminar-entry .small { color:var(--muted); line-height:1.5; font-size:14px; }
@@ -161,17 +178,13 @@
 
   <main class="container page-grid">
 
-    <!-- MAIN CONTENT COLUMN -->
+    <!-- main content -->
     <section class="content">
 
-      <!-- HERO -->
+      <!-- hero -->
       <div class="teaching-hero" style="text-align:center; margin-bottom:22px;">
         <h2 style="font-size:20px; margin:0 0 12px; color:var(--muted); font-weight:600;">Teaching Resources, Seminars, and Research Opportunities</h2>
-
-        <img
-          src="images/Understanding.png"
-          style="display:block; max-width:920px; width:88%; height:auto; margin:0 auto 10px; border-radius:8px; box-shadow:0 8px 30px rgba(2,6,10,0.45); border:1px solid rgba(255,255,255,0.03);" />
-
+        <img src="images/Understanding.png" style="display:block; max-width:920px; width:88%; height:auto; margin:0 auto 10px; border-radius:8px; box-shadow:0 8px 30px rgba(2,6,10,0.45); border:1px solid rgba(255,255,255,0.03);" />
         <p style="max-width:920px; margin:0 auto; color:var(--muted); font-size:14px;">
           "the top part of this webpage seems pretty empty... try to put something nice here, I don't know. give me an image of a confused student who then understands a math concept!" from a conversation with chatty who insists delta x over delta x is the key
         </p>
@@ -179,15 +192,11 @@
 
       <h2>Recent and Upcoming Courses</h2>
 
-      <!-- Semina resources: language preserved -->
       <section class="teaching-resources">
         <p>About the Semina material below: Semina is an AI tutor who encourages students with problem solving and incremental discovery. Semina was developed by <a href="https://zilin.one">Zilin Jiang</a>. For information about the project and feedback, please contact him.</p>
       </section>
 
-      <!-- COURSES: group each term in a .course-year. When a term has multiple .course-entry elements,
-           .course-row will place them side-by-side when the viewport allows. -->
-
-      <!-- FALL 2026: APM 503 and MAT 425 side-by-side (I placed MAT 425 here so it appears to the right of APM 503) -->
+      <!-- FALL 2026: APM 503 (left) + MAT 425 (right) -->
       <div class="course-year">
         <h4>Fall 2026</h4>
         <div class="course-row">
@@ -214,7 +223,7 @@
         </div>
       </div>
 
-      <!-- FALL 2025 -->
+      <!-- FALL 2025: keep text unchanged; grid will place two if you add a second entry -->
       <div class="course-year">
         <h4>Fall 2025</h4>
         <div class="course-row">
@@ -228,6 +237,8 @@
               </div>
             </div>
           </div>
+
+          <!-- If you add another Fall 2025 course it will appear here as the right-hand card -->
         </div>
       </div>
 
@@ -263,13 +274,12 @@
         </div>
       </div>
 
-      <!-- Contact for students -->
       <section class="education-compact">
         <h3>Contact for students</h3>
         <p>If you are enrolled in a course and need help or accomodations, please contact me at jimmie.adriazola [at] asu [dot] edu.</p>
       </section>
 
-      <!-- SEMINARS (text preserved) -->
+      <!-- Seminars (text preserved) -->
       <section class="teaching-seminars">
         <h2>Seminars</h2>
 
@@ -302,7 +312,7 @@
         </p>
       </section>
 
-      <!-- RESEARCH OPPORTUNITIES (text preserved, fixed a broken URL) -->
+      <!-- Research opportunities (text preserved) -->
       <section class="research-opps">
         <h2 class="research-heading">Research opportunities</h2>
 
@@ -335,7 +345,7 @@
 
     </section>
 
-    <!-- SIDEBAR / PROFILE CARD (unchanged look) -->
+    <!-- sidebar profile -->
     <aside class="profile-card" style="background:transparent; border:none; padding:0;">
       <div style="background:linear-gradient(180deg,var(--surface),#0b1216); border:1px solid var(--border); border-radius:10px; padding:18px; box-shadow:0 18px 40px rgba(2,6,10,0.55);">
         <img src="images/Nesin-Amphitheater.jpg" alt="Jimmie Adriazola portrait" class="profile-photo">
@@ -356,5 +366,6 @@
   </footer>
 </body>
 </html>
+
 
 
