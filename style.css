@@ -482,6 +482,121 @@ html, body {
   /* overflow-x: hidden; */
 }
 
+/* ===== Mobile friendliness fixes (paste at end of style.css) ===== */
+
+/* Prevent header nav from wrapping into vertical stack:
+   make it horizontally scrollable on small screens */
+@media (max-width: 880px) {
+  .header-inner {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .main-nav {
+    display: block;                  /* show nav, but keep it single-line scroll */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    padding: 8px 0 0;
+    margin-top: 6px;
+  }
+
+  .main-nav a {
+    display: inline-block;
+    margin: 0 14px 0 0;              /* horizontal spacing */
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  /* Reduce header spacing so nav doesn't push content down too far */
+  .site-header { padding: 12px 0; }
+}
+
+/* Hero stacking and profile card centering */
+@media (max-width: 880px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    align-items: start;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  /* ensure hero text first, profile card below */
+  .hero-text { order: 1; }
+  .profile-right { order: 2; margin: 0 auto; width: 100%; max-width: 420px; }
+
+  .profile-right,
+  .profile-card {           /* if you still use .profile-card elsewhere */
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  /* make the profile card visually smaller on small screens */
+  .profile-photo {
+    width: 200px;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .profile-name { font-size: 18px; }
+  .profile-role { font-size: 13px; }
+}
+
+/* Reduce large headings on very small screens so they wrap nicely */
+@media (max-width: 640px) {
+  section h2 { font-size: 20px; }
+  section h3 { font-size: 16px; }
+  .lead { font-size: 14px; }
+  .hero-text p { font-size: 14px; }
+}
+
+/* Force single-column publications on phones and make images sit below text */
+@media (max-width: 880px) {
+  .pub-entry {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 12px 0;
+  }
+
+  .pub-figure {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .pub-figure img {
+    width: 100%;
+    height: auto;
+    max-height: 260px; /* keep a consistent "large" size without dominating */
+    object-fit: cover;
+  }
+
+  /* make pub-title slightly larger for readability on phones */
+  .pub-title { font-size: 15px; }
+}
+
+/* Prevent accidental extremely long words / URLs from breaking layout */
+.content, .container, main, header, footer {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Avoid horizontal overflow overall */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Optional: slightly reduce left/right container padding on very small screens */
+@media (max-width: 420px) {
+  .container {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+}
+
 
 /* soft break helper */
 .soft-break{display:none}
