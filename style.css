@@ -415,6 +415,72 @@ a:focus{
   .research-content { padding: 0 6px; }
 }
 
+/* ------------------------------------------------------------------
+   Layout safety & image constraints (fix right-shift / overflow)
+   ------------------------------------------------------------------ */
+
+/* Global image guard: never overflow parent */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;   /* avoids inline spacing issues */
+}
+
+/* Ensure the main page container is centered and never overflows */
+.container {
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+  width: 100%;
+  max-width: var(--max-width);
+  overflow-wrap: break-word; /* avoid long words forcing width */
+}
+
+/* Research banner specific safety */
+.research-banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 14px 0 20px;
+  padding: 0 8px;            /* small horizontal padding to avoid touch edges */
+}
+
+.research-image {
+  width: 100%;
+  max-width: 960px;          /* large but capped */
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 10px 30px rgba(2,6,10,0.6);
+  object-fit: cover;
+  display: block;
+}
+
+/* if any grid/hero column is forcing horizontal overflow, make it shrink */
+.hero-grid, .page-grid {
+  grid-template-columns: 1fr 320px;
+  gap: 28px;
+  min-width: 0;       /* the important bit: allow children to shrink */
+}
+
+/* important: allow direct children to shrink inside grid cells */
+.hero-text, .profile-right, .content, .profile-card {
+  min-width: 0;
+}
+
+/* small safety for very long inline text (links, code, long titles) */
+a, p, .pub-title, .course-title {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* last-resort: hide any horizontal overflow (use only if layout still slips) */
+html, body {
+  /* comment out the next line while tuning layout; enable if you still see horizontal scroll */
+  /* overflow-x: hidden; */
+}
 
 
 /* soft break helper */
