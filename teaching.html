@@ -15,53 +15,92 @@
 
   <!-- Page-specific small CSS fixes and layout for teaching page -->
   <style>
-    /* ----- Header and nav fixes (prevent header overflow / vertical text) ----- */
-    .header-inner{ display:flex; align-items:center; justify-content:space-between; gap:20px; }
-    .brand{ display:flex; flex-direction:column; }
-    .brand .logo{ font-weight:700; font-size:20px; color:var(--text); text-decoration:none; }
-    .brand .subtitle{ margin-top:4px; font-size:13px; color:var(--muted); writing-mode:horizontal-tb !important; transform:none !important; letter-spacing:0 !important; }
+    /* ---------- Header / nav fixes ---------- */
+    /* Keep header compact and avoid brand stacking except on very narrow screens */
+    .header-inner {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      padding:10px 0;
+    }
 
+    /* brand: prefer row layout so name and subtitle sit on same row */
+    .brand {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:0;             /* let it shrink */
+    }
+    .brand .logo {
+      font-weight:700;
+      font-size:20px;
+      color:var(--text);
+      text-decoration:none;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      display:inline-block;
+      min-width:0;
+    }
+    .brand .subtitle {
+      font-size:13px;
+      color:var(--muted);
+      margin:0;
+      white-space:nowrap;
+      opacity:0.95;
+    }
+
+    /* main nav: single-line horizontal scroller when needed */
     .main-nav{
       display:flex;
-      gap:20px;
+      gap:18px;
       align-items:center;
       flex-wrap:nowrap;
       overflow-x:auto;
       -webkit-overflow-scrolling:touch;
       padding:6px 0;
+      min-width:0;             /* allow shrink */
     }
     .main-nav a{ white-space:nowrap; color:var(--muted); text-decoration:none; padding:6px 0; }
     .main-nav a[aria-current="page"]{ color:var(--text); font-weight:600; }
 
-    /* On narrow screens keep header compact */
+    /* small screens: stack header but keep it compact */
     @media (max-width:880px){
-      .header-inner{ gap:12px; padding:8px 0; }
-      .brand .logo{ font-size:18px; }
-      .main-nav{ gap:12px; font-size:15px; }
-      .container{ padding-left:16px; padding-right:16px; }
+      .header-inner{
+        flex-direction:column;
+        align-items:stretch;
+        gap:8px;
+        padding:8px 0;
+      }
+      .brand { justify-content:space-between; }
+      .brand .subtitle{ display:none; } /* avoid vertical subtitle text */
+      .main-nav { padding-top:4px; gap:12px; }
     }
 
-    /* ----- Page grid: keep single column on phones, two-column layout on large screens ----- */
-    .page-grid{ display:grid; grid-template-columns: 1fr; gap:28px; }
-    @media(min-width:1100px){
-      .page-grid{ grid-template-columns: 1fr 360px; align-items:start; }
-      /* put profile card off to right on wide screens (we keep it simple so it plugs into your other pages) */
+    /* ---------- Page grid ---------- */
+    .page-grid{ display:grid; grid-template-columns: 1fr; gap:28px; align-items:start; }
+    @media (min-width:1100px){
+      .page-grid{ grid-template-columns: 1fr 360px; }
     }
 
-    /* ----- Teaching hero ----- */
+    /* ---------- Teaching hero ---------- */
     .teaching-hero img { width:100%; height:auto; display:block; border-radius:8px; }
     .teaching-hero h2{ margin:0 0 12px; font-weight:600; color:var(--muted); }
 
-    /* ----- Year-grid + course cards: courses in same year sit side-by-side ----- */
-    .year-block{ margin:20px 0 28px; }
-    .year-heading{ margin:0 0 12px; font-size:18px; color:var(--text); font-weight:700; }
-
+    /* ---------- Year grid & course cards (fixed) ---------- */
+    /* Use a slightly smaller min width so two cards can fit without forcing overflow.
+       Use auto-fit so cards fill available space. */
     .year-grid{
       display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap:18px;
       align-items:stretch;
+      margin:0;
     }
+
+    /* safety: allow grid children to shrink (prevents overflow) */
+    .year-grid > * { min-width: 0; }
 
     .course-card{
       background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
@@ -72,13 +111,19 @@
       display:flex;
       flex-direction:column;
       justify-content:space-between;
+      min-width:0;            /* important */
     }
-    .course-title{ font-weight:700; color:var(--text); margin-bottom:6px; font-size:15px; }
+    .course-title{ font-weight:700; color:var(--text); margin-bottom:6px; font-size:15px; word-break:break-word; }
     .course-meta{ color:var(--muted); margin-bottom:10px; font-size:13px; }
     .course-links a{ color:var(--accent); text-decoration:none; font-size:13px; }
     .course-links a:hover{ text-decoration:underline; }
 
-    /* ----- Seminars and research ----- */
+    /* On very narrow screens make course cards stack cleanly */
+    @media (max-width:800px){
+      .year-grid{ grid-template-columns: 1fr; }
+    }
+
+    /* ---------- Seminars & research ---------- */
     .teaching-seminars .seminar-entry{ margin:12px 0; padding:12px 0; border-top:1px solid rgba(255,255,255,0.03); }
     .teaching-seminars .seminar-entry h4{ margin:6px 0 8px; color:var(--text); font-size:16px; }
     .seminar-entry .small{ color:var(--muted); line-height:1.5; font-size:14px; }
@@ -87,15 +132,13 @@
     .research-banner{ max-width:100%; margin:8px 0 12px; text-align:center; }
     .research-image{ width:100%; max-width:920px; height:auto; border-radius:8px; box-shadow:0 8px 30px rgba(2,6,10,0.45); border:1px solid rgba(255,255,255,0.03); }
 
-    .research-content{ color:var(--muted); font-size:14px; line-height:1.6; }
-    .research-content p{ margin:10px 0; }
+    /* ---------- Small tweaks ---------- */
+    .profile-photo { width:160px; height:auto; display:block; margin:0 auto 12px; border-radius:999px; }
+    .profile-card { min-width:0; } /* ensure aside can shrink on narrow screens */
 
-    /* small tweaks for container widths on tiny phones */
-    @media (max-width:420px){
-      .course-title{ font-size:14px; }
-      .course-card{ padding:12px; }
-      .teaching-hero img{ width:100%; }
-    }
+    /* Prevent accidental horizontal overflow from long inline content */
+    .year-heading, .course-title, .course-meta, a { word-break:break-word; overflow-wrap:break-word; }
+
   </style>
 </head>
 
@@ -300,7 +343,7 @@
     <!-- RIGHT: profile card (kept simple so it plugs into your existing site) -->
     <aside class="profile-card" style="background:transparent; border:none; padding:0;">
       <div style="background:linear-gradient(180deg,var(--surface),#0b1216); border:1px solid var(--border); border-radius:10px; padding:18px; box-shadow:0 18px 40px rgba(2,6,10,0.55);">
-        <img src="images/Nesin-Amphitheater.jpg" alt="Jimmie Adriazola portrait" class="profile-photo" style="width:160px; height:auto; margin:0 auto 12px; display:block;">
+        <img src="images/Nesin-Amphitheater.jpg" alt="Jimmie Adriazola portrait" class="profile-photo">
         <div class="profile-name" style="text-align:center; font-weight:700; color:var(--text); margin-bottom:6px;">Jimmie Adriazola</div>
         <div class="profile-role" style="text-align:center; color:var(--muted); font-size:13px; margin-bottom:12px;">Incoming Assistant Professor<br>School of Mathematical and Statistical Sciences</div>
 
@@ -321,3 +364,4 @@
 
 </body>
 </html>
+
