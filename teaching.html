@@ -13,157 +13,137 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+  <!-- Page-specific overrides to make header and course grid behave like home -->
   <style>
-  /* ---------- Keep header consistent with site-wide styles ---------- */
-  /* Avoid re-stacking the header on desktop; match the main site. */
-  .header-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    padding: 10px 0;
-  }
-
-  /* Brand stays inline so logo + subtitle do not create extra top space */
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-width: 0;
-  }
-  .brand .logo {
-    font-weight: 700;
-    font-size: 20px;
-    color: var(--text);
-    text-decoration: none;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-width: 0;
-  }
-  .brand .subtitle {
-    font-size: 13px;
-    color: var(--muted);
-    margin: 0;
-    white-space: nowrap;
-    opacity: 0.95;
-  }
-
-  /* Nav: single-line horizontal scroller when there's not enough room.
-     Do not let nav wrap and thereby push the header taller. */
-  .main-nav {
-    display: flex;
-    gap: 18px;
-    align-items: center;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: 6px 0;
-    min-width: 0;
-  }
-  .main-nav a {
-    white-space: nowrap;
-    color: var(--muted);
-    text-decoration: none;
-    padding: 6px 0;
-    margin-left: 0;
-  }
-  .main-nav a[aria-current="page"] {
-    color: var(--text);
-    font-weight: 600;
-  }
-
-  /* On small screens keep header compact but do NOT create extra vertical subtitle. */
-  @media (max-width:880px) {
+    /* ---------- Header / nav consistency (override page-specific drift) ---------- */
     .header-inner {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 8px;
-      padding: 8px 0;
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 20px;
+      padding: 10px 0;
+      min-width: 0;
     }
-    .brand { justify-content: space-between; }
-    .brand .subtitle { display: none; } /* avoids vertical stacking */
-    .main-nav { padding-top: 4px; gap: 12px; }
-  }
+    .brand {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      gap: 12px;
+      min-width: 0;
+    }
+    .brand .logo {
+      font-weight:700;
+      font-size:20px;
+      color:var(--text);
+      text-decoration:none;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      min-width:0;
+    }
+    .brand .subtitle {
+      display:inline-block !important;
+      font-size:13px;
+      color:var(--muted);
+      margin:0;
+      white-space:nowrap;
+      opacity:0.95;
+    }
 
-  /* ---------- Page grid ---------- */
-  .page-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 28px;
-    align-items: start;
-  }
-  @media (min-width:1100px) {
-    .page-grid { grid-template-columns: 1fr 360px; }
-  }
+    /* nav: horizontal scroller if space is tight; never wrap to force a taller header */
+    .main-nav {
+      display:flex !important;
+      gap:18px;
+      align-items:center;
+      flex-wrap:nowrap;
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+      padding:6px 0;
+      min-width:0;
+    }
+    .main-nav a { white-space:nowrap; color:var(--muted); text-decoration:none; padding:6px 0; }
+    .main-nav a[aria-current="page"] { color:var(--text); font-weight:600; }
 
-  /* ---------- Hero ---------- */
-  .teaching-hero img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 8px;
-  }
-  .teaching-hero h2 {
-    margin: 0 0 12px;
-    font-weight: 600;
-    color: var(--muted);
-  }
+    @media (max-width:880px) {
+      .header-inner {
+        flex-direction: column !important;
+        align-items: stretch;
+        gap:8px;
+        padding:8px 0;
+      }
+      .brand { justify-content: space-between; }
+      .brand .subtitle { display:none !important; } /* avoid tall header on small screens */
+      .main-nav { padding-top:4px; gap:12px; }
+    }
 
-  /* ---------- Year grid & course cards (fixed) ---------- */
-  /* IMPORTANT: use smaller min width so two cards fit side-by-side on medium screens.
-     auto-fit lets them wrap naturally; min-width 220px gives good density without overflow. */
-  .year-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 18px;
-    align-items: stretch;
-    margin: 0;
-  }
+    /* ---------- Page layout: two-column main + sidebar ---------- */
+    .page-grid {
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:28px;
+      align-items:start;
+    }
+    @media (min-width:1100px) {
+      .page-grid { grid-template-columns: 1fr 360px; }
+    }
 
-  /* Ensure children can shrink inside grid cells (prevents forcing a wider column) */
-  .year-grid > * { min-width: 0; }
+    /* ---------- Teaching hero ---------- */
+    .teaching-hero img { width:100%; height:auto; display:block; border-radius:8px; }
+    .teaching-hero h2 { margin:0 0 12px; font-weight:600; color:var(--muted); }
 
-  .course-card {
-    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
-    border: 1px solid rgba(255,255,255,0.03);
-    border-radius: 8px;
-    padding: 16px;
-    box-shadow: 0 8px 24px rgba(2,6,10,0.45);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-width: 0;            /* critical to prevent overflow */
-    width: 100%;
-    max-width: 100%;
-  }
-  .course-title { font-weight: 700; color: var(--text); margin-bottom: 6px; font-size: 15px; word-break: break-word; }
-  .course-meta  { color: var(--muted); margin-bottom: 10px; font-size: 13px; }
-  .course-links a { color: var(--accent); text-decoration: none; font-size: 13px; }
-  .course-links a:hover { text-decoration: underline; }
+    /* ---------- YEAR GRID & COURSE CARDS (fixed) ---------- */
+    /* Desktop: explicit 2-column; medium: auto-fit; phone: single column.
+       Using min-width:0 on children prevents long content from forcing overflow. */
+    @media (min-width:1000px) {
+      .year-grid { display:grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap:18px; align-items:stretch; margin:0; }
+    }
+    @media (max-width:999px) and (min-width:540px) {
+      .year-grid { display:grid !important; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important; gap:18px; align-items:stretch; margin:0; }
+    }
+    @media (max-width:539px) {
+      .year-grid { display:grid !important; grid-template-columns: 1fr !important; gap:14px; }
+    }
 
-  /* On very narrow screens force single column */
-  @media (max-width:800px) {
-    .year-grid { grid-template-columns: 1fr; }
-  }
+    .year-grid > * { min-width: 0 !important; } /* critical safety */
 
-  /* ---------- Seminars & research ---------- */
-  .teaching-seminars .seminar-entry { margin: 12px 0; padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.03); }
-  .teaching-seminars .seminar-entry h4 { margin: 6px 0 8px; color: var(--text); font-size: 16px; }
-  .seminar-entry .small { color: var(--muted); line-height: 1.5; font-size: 14px; }
+    .course-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      border: 1px solid rgba(255,255,255,0.03);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(2,6,10,0.45);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      min-width:0 !important;
+      width:auto !important;
+      max-width:100% !important;
+    }
+    .course-title { font-weight:700; color:var(--text); margin-bottom:6px; font-size:15px; word-break:break-word; }
+    .course-meta  { color:var(--muted); margin-bottom:10px; font-size:13px; }
+    .course-links a { color:var(--accent); text-decoration:none; font-size:13px; }
+    .course-links a:hover { text-decoration:underline; }
 
-  .research-opps { margin-top: 22px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.03); }
-  .research-banner { max-width: 100%; margin: 8px 0 12px; text-align: center; }
-  .research-image { width: 100%; max-width: 920px; height: auto; border-radius: 8px; box-shadow: 0 8px 30px rgba(2,6,10,0.45); border:1px solid rgba(255,255,255,0.03); }
+    /* small screens stacking fallback */
+    @media (max-width:800px) { .year-grid { grid-template-columns: 1fr !important; } }
 
-  /* ---------- Small tweaks ---------- */
-  .profile-photo { width: 160px; height: auto; display: block; margin: 0 auto 12px; border-radius: 999px; }
-  .profile-card { min-width: 0; }
+    /* ---------- Seminars & research ---------- */
+    .teaching-seminars .seminar-entry { margin:12px 0; padding:12px 0; border-top:1px solid rgba(255,255,255,0.03); }
+    .teaching-seminars .seminar-entry h4 { margin:6px 0 8px; color:var(--text); font-size:16px; }
+    .seminar-entry .small { color:var(--muted); line-height:1.5; font-size:14px; }
 
-  /* Prevent horizontal overflow from long titles/links */
-  .year-heading, .course-title, .course-meta, a { word-break: break-word; overflow-wrap: break-word; }
-</style>
+    .research-opps { margin-top:22px; padding-top:8px; border-top:1px solid rgba(255,255,255,0.03); }
+    .research-banner { max-width:100%; margin:8px 0 12px; text-align:center; }
+    .research-image { width:100%; max-width:920px; height:auto; border-radius:8px; box-shadow:0 8px 30px rgba(2,6,10,0.45); border:1px solid rgba(255,255,255,0.03); }
 
+    /* small tweaks */
+    .profile-photo { width:160px; height:auto; display:block; margin:0 auto 12px; border-radius:999px; }
+    .profile-card { min-width:0; }
+
+    /* Prevent accidental horizontal overflow from long content */
+    .year-heading, .course-title, .course-meta, a, p { word-break:break-word; overflow-wrap:break-word; }
+  </style>
 </head>
 
 <body>
@@ -188,18 +168,15 @@
     <!-- LEFT: main content -->
     <section class="content">
 
-      <!-- Hero: centered image with small heading and caption -->
       <div class="teaching-hero" style="text-align:center; margin-bottom:20px;">
         <h2>Teaching Resources, Seminars, and Research Opportunities</h2>
         <img src="images/Understanding.png" alt="Student confused then understanding a math concept">
         <p style="max-width:920px; margin:10px auto 0; color:var(--muted); font-size:14px;">
-          An image and short caption to open the teaching page. Example dialogue: "the top part of this webpage seems pretty empty... give me an image of a confused student who then understands a math concept."
+          An image and short caption to open the teaching page.
         </p>
       </div>
 
-      <!-- Recent and upcoming courses -->
       <h2>Recent and Upcoming Courses</h2>
-
       <section class="teaching-resources" aria-labelledby="semina-heading">
         <p class="lead" id="semina-heading" style="color:var(--muted); max-width:920px;">
           About the Semina material below: Semina is an AI tutor who helps students with problem solving and encourages incremental discovery. Semina was developed by <a href="https://zilin.one" target="_blank" rel="noopener">Zilin Jiang</a>.
@@ -220,7 +197,17 @@
             </div>
           </article>
 
-          <!-- add additional Fall 2026 courses here to appear side-by-side -->
+          <!-- duplicate card included as a quick local test to confirm side-by-side -->
+          <!-- remove this duplicate when you add real courses -->
+          <article class="course-card">
+            <div>
+              <div class="course-title">APM 503 · Applied Analysis (section B)</div>
+              <div class="course-meta">Arizona State University</div>
+            </div>
+            <div class="course-links">
+              <a href="#" target="_blank" rel="noopener">Details</a>
+            </div>
+          </article>
         </div>
       </div>
 
@@ -278,22 +265,6 @@
         </div>
       </div>
 
-      <!-- ===== Year: Fall 2024 ===== -->
-      <div class="year-block">
-        <div class="year-heading">Fall 2024</div>
-        <div class="year-grid">
-          <article class="course-card">
-            <div>
-              <div class="course-title">MATH 3315 · Intro to Scientific Computing</div>
-              <div class="course-meta">Southern Methodist University</div>
-            </div>
-            <div class="course-links">
-              <a href="tmats/SciCompFinal.pdf" target="_blank" rel="noopener">Take Home Final</a>
-            </div>
-          </article>
-        </div>
-      </div>
-
       <!-- Contact for students -->
       <section class="education-compact">
         <h3>Contact for students</h3>
@@ -309,68 +280,49 @@
 
         <div class="seminar-entry">
           <h4>AMPD UP (student-led paper club)</h4>
-          <p class="small">
-            A reading group where participants present and discuss recent papers across applied math, scientific computing, and machine learning. The club emphasizes student leadership, critical reading, and presentation practice.
-          </p>
-          <p class="small">
-            Website / schedule: <a href="https://kimballj67.github.io/ASU_Applied_Math_Paper_Group/" target="_blank" rel="noopener">Club Site</a>
-          </p>
-          <p class="small" style="color:var(--muted);">If you are a student and would like to present, please email me and I'll put you in contact with the student organizers.</p>
+          <p class="small">A reading group where participants present and discuss recent papers across applied math, scientific computing, and machine learning.</p>
         </div>
 
         <div class="seminar-entry">
           <h4>Data-Oriented Mathematical &amp; Statistical Sciences Seminar (DoMSS)</h4>
-          <p class="small">
-            A seminar series focused on data-driven mathematical and statistical methods, interdisciplinary applications, and invited research talks. I co-organize this seminar with Heyrim Cho; we invite speakers across applied math, statistics, and data science.
-          </p>
-          <p class="small">
-            Schedule and talks: <a href="https://math.asu.edu/asu-events-type/concert" target="_blank" rel="noopener">ASU events — DoMSS</a>
-            · Co-organizer: <a href="https://heyrim.github.io" target="_blank" rel="noopener">Heyrim Cho</a>.
-          </p>
-          <p class="small" style="color:var(--muted);">If you would like to present or recommend a speaker, please email me.</p>
+          <p class="small">A seminar series focused on data-driven mathematical and statistical methods. Co-organized with Heyrim Cho.</p>
         </div>
       </section>
 
       <!-- Research opportunities -->
       <section class="research-opps" aria-labelledby="research-heading">
         <h2 id="research-heading">Research opportunities</h2>
-
         <div class="research-banner" aria-hidden="false">
           <img src="images/Money.png" alt="Research project visual" class="research-image">
         </div>
-
         <div class="research-content">
-          <p><strong>Funded through ASU's Online Undergraduate Research Scholars (OURS) program.</strong></p>
-
+          <p><strong>Funded through ASU's OURS program.</strong></p>
           <p><strong>Can machines, built on mathematics, be taught to discover mathematics itself?</strong></p>
-
-          <p>
-            This question has inspired a flurry of exciting research in AI and math reasoning. In this project, we adapt modern statistical learning techniques to show that even simple algorithms, running on ordinary computers, can rediscover classical mathematical formulas such as the area of a circle, the laws of logarithms, and even the prime number theorem. These rediscoveries arise because the methods uncover structure directly from data, not because the rules were preprogrammed or learned from text.
-          </p>
-
-          <p>
-            Now imagine that same algorithm stumbling upon a brand-new identity, a hidden symmetry, or a surprising relation that no one has ever written down before. That is the thrill this project will chase.
-          </p>
-
-          <p><strong>Prerequisites:</strong> Differential Equations, Linear Algebra, and some programming experience. Experience with numerical methods preferred but not required.</p>
-
-          <p>
-            This project is supported by ASU's OURS program. Learn more about the program and how it supports undergraduate research at ASU: <a href="https://ours.thecollege.asu.edu" target="_blank" rel="noopener">OURS @ ASU</a>.
-          </p>
-
-          <p>Interested students: please email me with a short note about your background and interest.</p>
         </div>
       </section>
 
     </section>
 
+    <!-- RIGHT: profile card (matches home page look) -->
+    <aside class="profile-card" style="background:transparent; border:none; padding:0;">
+      <div style="background:linear-gradient(180deg,var(--surface),#0b1216); border:1px solid var(--border); border-radius:10px; padding:18px; box-shadow:0 18px 40px rgba(2,6,10,0.55);">
+        <img src="images/Nesin-Amphitheater.jpg" alt="Jimmie Adriazola portrait" class="profile-photo">
+        <div class="profile-name" style="text-align:center; font-weight:700; color:var(--text); margin-bottom:6px;">Jimmie Adriazola</div>
+        <div class="profile-role" style="text-align:center; color:var(--muted); font-size:13px; margin-bottom:12px;">Incoming Assistant Professor<br>School of Mathematical and Statistical Sciences</div>
+        <div class="profile-links" style="display:flex; justify-content:center; gap:18px; margin-bottom:12px;">
+          <a href="https://scholar.google.com/citations?user=aTOBmQUAAAAJ&hl=en" target="_blank" rel="noopener" style="color:var(--accent);"><i class="fa fa-graduation-cap" aria-hidden="true"></i> <span style="margin-left:6px;">Google Scholar</span></a>
+          <a href="https://search.asu.edu/profile/5123395" target="_blank" rel="noopener" style="color:var(--accent);"><i class="fa fa-university" aria-hidden="true"></i> <span style="margin-left:6px;">ASU page</span></a>
+        </div>
+        <p class="profile-blurb" style="color:var(--muted); font-size:13px; text-align:center;">The amphitheater above is located at the <a href="https://nesinkoyleri.org/en/" target="_blank" rel="noopener">Nesin Mathematics Village</a> in Turkey.</p>
+      </div>
+    </aside>
 
   </main>
 
   <footer class="page-footer container">
     <p>Site maintained by Jimmie Adriazola</p>
   </footer>
-
 </body>
 </html>
+
 
